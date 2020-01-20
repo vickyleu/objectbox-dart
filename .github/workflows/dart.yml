@@ -3,39 +3,44 @@ name: Dart CI
 on: [push, pull_request]
 
 jobs:
-#  generator:
-#    runs-on: ubuntu-latest
-#    container:
-#      image:  google/dart:latest
-#    steps:
-#      - uses: actions/checkout@v1
-#      - name: Install ObjectBox C-API
-#        run: ./install.sh
-#      - name: Run tests
-#        run: ./generator/test.sh
-#
-#  lib:
-#    needs: generator
-#    runs-on: ubuntu-latest
-#    container:
-#      image:  google/dart:latest
-#    steps:
-#      - uses: actions/checkout@v1
-#      - name: Install ObjectBox C-API
-#        run: ./install.sh
-#      - name: Install dependencies
-#        run: pub get
-#      - name: Generate ObjectBox models
-#        run: pub run build_runner build
-#      - name: Run tests
-#        run: pub run test
+  #  generator:
+  #    runs-on: ubuntu-latest
+  #    container:
+  #      image:  google/dart:latest
+  #    steps:
+  #      - uses: actions/checkout@v1
+  #      - name: Install ObjectBox C-API
+  #        run: ./install.sh
+  #      - name: Run tests
+  #        run: ./generator/test.sh
+  #
+  #  lib:
+  #    needs: generator
+  #    runs-on: ubuntu-latest
+  #    container:
+  #      image:  google/dart:latest
+  #    steps:
+  #      - uses: actions/checkout@v1
+  #      - name: Install ObjectBox C-API
+  #        run: ./install.sh
+  #      - name: Install dependencies
+  #        run: pub get
+  #      - name: Generate ObjectBox models
+  #        run: pub run build_runner build
+  #      - name: Run tests
+  #        run: pub run test
 
   lib-macos:
-#    needs: generator
+    #    needs: generator
     runs-on: macos-latest
     steps:
       - name: Install Flutter
-        run: curl -SL https://storage.googleapis.com/flutter_infra/releases/stable/macos/flutter_macos_v1.12.13+hotfix.5-stable.zip | tar -xf - -C ~/ && ls -alh ~/
+        run: |
+          curl -SL https://storage.googleapis.com/flutter_infra/releases/stable/macos/flutter_macos_v1.12.13+hotfix.5-stable.zip | tar -xf - -C ~/
+          export PATH="$PATH:`realpath ~`/flutter/bin"
+          flutter doctor
+      - name: Check flutter
+        run: flutter doctor
       - uses: actions/checkout@v1
       - name: Install ObjectBox C-API
         run: ./install.sh
@@ -45,3 +50,19 @@ jobs:
         run: pub run build_runner build
       - name: Run tests
         run: pub run test
+
+#  lib-windows:
+#    #    needs: generator
+#    runs-on: windows-latest
+#    steps:
+#      - name: Install Flutter
+#        run: curl -SL https://storage.googleapis.com/flutter_infra/releases/stable/macos/flutter_macos_v1.12.13+hotfix.5-stable.zip | tar -xf - -C ~/ && ls -alh ~/
+#      - uses: actions/checkout@v1
+#      - name: Install ObjectBox C-API
+#        run: ./install.sh
+#      - name: Install dependencies
+#        run: pub get
+#      - name: Generate ObjectBox models
+#        run: pub run build_runner build
+#      - name: Run tests
+#        run: pub run test
