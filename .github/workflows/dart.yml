@@ -36,8 +36,8 @@ jobs:
     steps:
       - name: Install Flutter
         run: |
-          curl -SL https://storage.googleapis.com/flutter_infra/releases/stable/macos/flutter_macos_v1.12.13+hotfix.5-stable.zip | tar -xf - -C ~/
-          export PATH="$PATH:`realpath ~`/flutter/bin"
+          curl -SL https://storage.googleapis.com/flutter_infra/releases/stable/macos/flutter_macos_v1.12.13+hotfix.5-stable.zip | tar -xf - -C ./
+          export PATH="$PATH:`pwd`/flutter/bin"
           flutter doctor
       - name: Check flutter
         run: flutter doctor
