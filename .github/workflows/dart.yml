@@ -2,6 +2,9 @@ name: Dart CI
 
 on: [push, pull_request]
 
+# Note: dart/flutter is currently not pre-installed so we need to do that manually.
+# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/software-installed-on-github-hosted-runners
+
 jobs:
   #  generator:
   #    runs-on: ubuntu-latest
@@ -37,6 +40,7 @@ jobs:
       - name: Install Flutter
         run: |
           curl -SL https://storage.googleapis.com/flutter_infra/releases/stable/macos/flutter_macos_v1.12.13+hotfix.5-stable.zip | tar -xf - -C ./
+          chmod +x flutter/bin/*
           export PATH="$PATH:`pwd`/flutter/bin"
           flutter doctor
       - name: Check flutter
@@ -51,18 +55,24 @@ jobs:
       - name: Run tests
         run: pub run test
 
-#  lib-windows:
-#    #    needs: generator
-#    runs-on: windows-latest
-#    steps:
-#      - name: Install Flutter
-#        run: curl -SL https://storage.googleapis.com/flutter_infra/releases/stable/macos/flutter_macos_v1.12.13+hotfix.5-stable.zip | tar -xf - -C ~/ && ls -alh ~/
-#      - uses: actions/checkout@v1
-#      - name: Install ObjectBox C-API
-#        run: ./install.sh
-#      - name: Install dependencies
-#        run: pub get
-#      - name: Generate ObjectBox models
-#        run: pub run build_runner build
-#      - name: Run tests
-#        run: pub run test
+  lib-windows:
+    #    needs: generator
+    runs-on: windows-latest
+    steps:
+      - name: Install Flutter
+        run: |
+          wget https://storage.googleapis.com/flutter_infra/releases/stable/windows/flutter_windows_v1.12.13+hotfix.5-stable.zip -outfile flutter.zip
+          Expand-Archive -Path flutter.zip -DestinationPath c:\flutter
+          $env:Path += ";c:\flutter\bin"
+          flutter doctor
+      - name: Check flutter
+        run: flutter doctor
+      - uses: actions/checkout@v1
+      - name: Install ObjectBox C-API
+        run: ./install.sh
+      - name: Install dependencies
+        run: pub get
+      - name: Generate ObjectBox models
+        run: pub run build_runner build
+      - name: Run tests
+        run: pub run test
