@@ -15,6 +15,11 @@ Pod::Spec.new do |s|
   # Get the ObjectBox.framework from the objectbox-swift release (see README.md)
   s.source = { :path => '.' }
 
+  s.source_files = 'Classes/**/*'
+  s.public_header_files = 'Classes/**/*.h'
+  s.dependency 'Flutter'
+  s.dependency 'ObjectBox'
+
   s.ios.vendored_frameworks = 'Carthage/Build/iOS/ObjectBox.framework'
   # s.osx.vendored_frameworks = 'Carthage/Build/Mac/ObjectBox.framework'
 

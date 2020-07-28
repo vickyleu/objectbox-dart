@@ -1,3 +1,7 @@
+0.6.5 (2020-07-28)
+-----------------
+* Update packages in pubspec for new flutter version
+
 0.6.4 (2020-05-12)
 ------------------
 * Update to objectbox-swift 1.3.0
